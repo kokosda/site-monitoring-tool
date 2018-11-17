@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SiteMonitoringTool.Persistence;
+using SiteMonitoringTool.Services;
 
 namespace SiteMonitoringTool
 {
@@ -24,6 +25,13 @@ namespace SiteMonitoringTool
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<SiteMonitoringToolDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
+
+            services.AddSingleton<IWebSiteCrawlService, WebSiteCrawlService>();
+            services.AddSingleton<IScheduleService, ScheduleService>();
+
+            var serviceProvider = services.BuildServiceProvider();
+            var scheduleService = serviceProvider.GetService<IScheduleService>();
+            scheduleService.Schedule(() => serviceProvider.GetService<IWebSiteCrawlService>().Crawl());
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
