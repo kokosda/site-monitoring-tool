@@ -10,6 +10,7 @@ namespace SiteMonitoringTool.Controllers
     public class WebSiteStatusesController : Controller
     {
         private readonly SiteMonitoringToolDbContext dbContext;
+        
         public WebSiteStatusesController(SiteMonitoringToolDbContext dbContext)
         {
             this.dbContext = dbContext;

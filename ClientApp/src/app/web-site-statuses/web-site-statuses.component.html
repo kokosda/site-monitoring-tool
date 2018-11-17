@@ -1,0 +1,14 @@
+<h1>Web Site Statuses</h1>
+<p *ngIf="isLoading">Loading...</p>
+<table class="table" *ngIf="!isLoading">
+    <thead>
+        <th>Name</th>
+        <th>Url</th>
+        <th>IsActive</th>
+    </thead>
+    <tbody *ngFor="let wss of webSiteStatuses">
+        <td>{{ wss.siteName }}</td>
+        <td><a href="{{ wss.url }}" target="_blank">{{ wss.url }}</a></td>
+        <td>{{ wss.isActive }}</td>
+    </tbody>
+</table>
