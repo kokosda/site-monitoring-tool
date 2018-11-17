@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SiteMonitoringTool.Models;
 
 namespace SiteMonitoringTool.Persistence
 {
@@ -6,8 +7,9 @@ namespace SiteMonitoringTool.Persistence
     {
         public SiteMonitoringToolDbContext(DbContextOptions<SiteMonitoringToolDbContext> options)
             : base(options)
-        {
-            
+        {            
         }
+
+        public DbSet<WebSiteStatus> WebSiteStatuses { get; set; }
     }
 }
