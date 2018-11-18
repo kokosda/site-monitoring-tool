@@ -10,13 +10,15 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { WebSiteStatusesService } from './services/web-site-statuses.service';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    WebSiteStatusesComponent
+    WebSiteStatusesComponent,
+    LoginComponent
   ],
   imports: [
     FormsModule,
@@ -25,7 +27,8 @@ import { WebSiteStatusesService } from './services/web-site-statuses.service';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'websitestatuses', component: WebSiteStatusesComponent }
+      { path: 'websitestatuses', component: WebSiteStatusesComponent },
+      { path: 'login', component: LoginComponent }
     ])
   ],
   bootstrap: [AppComponent],

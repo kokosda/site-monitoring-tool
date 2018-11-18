@@ -11,5 +11,6 @@ namespace SiteMonitoringTool.Persistence
         }
 
         public DbSet<WebSiteStatus> WebSiteStatuses { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

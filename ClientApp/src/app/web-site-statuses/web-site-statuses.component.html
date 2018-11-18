@@ -9,6 +9,6 @@
     <tbody *ngFor="let wss of webSiteStatuses">
         <td>{{ wss.siteName }}</td>
         <td><a href="{{ wss.url }}" target="_blank">{{ wss.url }}</a></td>
-        <td>{{ wss.isActive }}</td>
+        <td><i class="glyphicon glyphicon-{{ wss.isActive ? 'play green' : 'stop red' }}"></i></td>
     </tbody>
 </table>
