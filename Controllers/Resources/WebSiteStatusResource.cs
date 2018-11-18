@@ -11,8 +11,5 @@ namespace SiteMonitoringTool.Controllers.Resources
         [Required]
         [StringLength(255)]
         public string Url { get; set; }
-
-        [Required]
-        public bool IsActive { get; set; }        
     }
 }

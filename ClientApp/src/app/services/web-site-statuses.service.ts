@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -14,6 +14,12 @@ export class WebSiteStatusesService {
 
   get() {
     return this.http.get('/api/websitestatuses')
+      .pipe(map(response => response));
+  }
+
+  create(wss) {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+    return this.http.post('/api/websitestatuses', wss, { headers: headers })
       .pipe(map(response => response));
   }
 }

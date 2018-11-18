@@ -46,7 +46,7 @@ namespace SiteMonitoringTool.Controllers
                 issuer: "https://localhost:5001",
                 audience: "https://localhost:5001",
                 claims: new List<Claim>(),
-                expires: DateTime.UtcNow.AddMinutes(5),
+                expires: DateTime.Now.AddMinutes(5),
                 signingCredentials: signinCredentials
             );
 

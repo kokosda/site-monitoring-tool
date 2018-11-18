@@ -20,6 +20,9 @@ export class WebSiteStatusesEditComponent extends WebSiteStatusesComponent {
 
   add(f) {
     console.log("ADD", f);
+    var wss = JSON.stringify(f.value);
+    this.webSiteStatusesService.create(wss)
+      .subscribe(response => console.log("ADD RESPONSE", response));
   }
 
   save(wss) {

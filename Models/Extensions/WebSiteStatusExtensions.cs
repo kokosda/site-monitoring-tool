@@ -15,8 +15,7 @@ namespace SiteMonitoringTool.Models.Extensions
             var result = new WebSiteStatusResource
             {
                 SiteName = model.SiteName,
-                Url = model.Url,
-                IsActive = model.IsActive  
+                Url = model.Url
             };
             return result;
         }
