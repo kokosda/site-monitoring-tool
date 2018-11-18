@@ -1,9 +1,10 @@
 using System;
+using System.Threading.Tasks;
 
 namespace SiteMonitoringTool.Services
 {
     public interface IScheduleService
     {
-        void Schedule(Action action);
+        void Schedule(Func<Task> action);
     }
 }

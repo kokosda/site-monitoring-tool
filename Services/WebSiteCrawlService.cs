@@ -28,28 +28,32 @@ namespace SiteMonitoringTool.Services
             
             await dbContext.WebSiteStatuses.ForEachAsync(wss =>
                 {
-                    try
-                    {
-                        var httpResponseTask = httpClient.GetAsync(wss.Url)
-                            .ContinueWith(hr => 
+                    var httpResponseTask = httpClient.GetAsync(wss.Url)
+                        .ContinueWith(hr => 
+                        {
+                            try
                             {
+                                logger.LogInformation($"{wss.Url} was queried.");
                                 var httpResponse = hr.Result;
 
                                 if (!httpResponse.IsSuccessStatusCode)
                                     wss.IsActive = false;
                                 else
                                     wss.IsActive = true;
-
-                                httpResponse.Dispose();
+                                httpResponse.Dispose();                           
+                            }
+                            catch (Exception ex)
+                            {
+                                wss.IsActive = false;
+                                logger.LogError(ex, $"Error querying {wss.Url}.");
+                            }
+                            finally
+                            {
                                 dbContext.WebSiteStatuses.Update(wss);
-                            });
+                            }
+                        });
 
-                        httpResponseTasks.Add(httpResponseTask);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, $"Error while querying {wss.Url}.");
-                    }
+                    httpResponseTasks.Add(httpResponseTask);
                 });
 
             await Task.WhenAll(httpResponseTasks)

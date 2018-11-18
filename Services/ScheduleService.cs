@@ -20,7 +20,7 @@ namespace SiteMonitoringTool.Services
             timer = new Timer(InitTimer, null, dueTime: TimeSpan.Zero, period: new TimeSpan(0, 0, 10));
         }
 
-        public void Schedule(Action action)
+        public void Schedule(Func<Task> action)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
@@ -53,14 +53,10 @@ namespace SiteMonitoringTool.Services
 
                 tempAction.IsExecuting = true;
 
-                Task.Factory.StartNew(state => 
+                Task.Factory.StartNew(async state => 
                 {
                     var @as = state as ActionState;
-                    @as.Action();
-                }, tempAction)
-                .ContinueWith((t, state) => 
-                {
-                    var @as = state as ActionState;
+                    await @as.Action();
                     @as.IsExecuting = false;
                 }, tempAction);
             }
@@ -70,7 +66,7 @@ namespace SiteMonitoringTool.Services
         {
             private volatile bool isExecuting;
 
-            public Action Action { get; set; }
+            public Func<Task> Action { get; set; }
             public bool IsExecuting
             {
                 get { return isExecuting; }
