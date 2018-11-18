@@ -1,4 +1,3 @@
-import { WebSiteStatusesComponent } from './web-site-statuses/web-site-statuses.component';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -9,8 +8,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
+import { LogInComponent } from './login/login.component';
+import { WebSiteStatusesComponent } from './web-site-statuses/web-site-statuses.component';
+
 import { WebSiteStatusesService } from './services/web-site-statuses.service';
-import { LoginComponent } from './login/login.component';
+import { AuthenticationService } from './services/authentication.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,7 @@ import { LoginComponent } from './login/login.component';
     NavMenuComponent,
     HomeComponent,
     WebSiteStatusesComponent,
-    LoginComponent
+    LogInComponent
   ],
   imports: [
     FormsModule,
@@ -28,12 +30,13 @@ import { LoginComponent } from './login/login.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'websitestatuses', component: WebSiteStatusesComponent },
-      { path: 'login', component: LoginComponent }
+      { path: 'login', component: LogInComponent }
     ])
   ],
   bootstrap: [AppComponent],
   providers: [
-    WebSiteStatusesService
+    WebSiteStatusesService,
+    AuthenticationService
   ]
 })
 export class AppModule { }
