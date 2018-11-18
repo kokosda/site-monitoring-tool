@@ -1,0 +1,28 @@
+<h1>Web Site Statuses - Edit</h1>
+<p *ngIf="isLoading">Loading...</p>
+<table class="table" *ngIf="!isLoading">
+    <thead>
+        <th>Name</th>
+        <th>Url</th>
+        <th>Action</th>
+    </thead>
+    <tbody *ngFor="let wss of webSiteStatuses">
+      <tr>
+        <td><input type="text" value="{{ wss.siteName }}" name="siteName" /></td>
+        <td><input type="text" value="{{ wss.url }}" name="url" /></td>
+        <td><button class="btn btn-info glyphicon glyphicon-ok" (click)="save(wss)"></button> | <button class="btn btn-danger glyphicon glyphicon-remove" (click)="remove(wss)"></button></td>
+      </tr>
+    </tbody>
+</table>
+<h2 *ngIf="!isLoading">Add new web site to monitor its status</h2>
+<form #f="ngForm" (ngSubmit)="add(f)" *ngIf="!isLoading">
+  <div class="form-group">
+    <label for="siteName">Site Name*</label>
+    <input id="siteName" [(ngModel)]="wss.siteName" name="siteName" type="text" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label for="siteName">URL*</label>
+    <input id="siteName" [(ngModel)]="wss.url" name="url" type="text" class="form-control" required>
+  </div>
+  <button class="btn btn-success">Create <i class="glyphicon glyphicon-plus"></i></button>
+</form>

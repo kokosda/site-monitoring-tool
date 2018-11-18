@@ -1,4 +1,4 @@
-import { WebSiteStatusesService } from '../services/web-site-statuses.service';
+import { WebSiteStatusesService } from './../services/web-site-statuses.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./web-site-statuses.component.css']
 })
 export class WebSiteStatusesComponent implements OnInit {
-  private webSiteStatusesService;
+  protected webSiteStatusesService: WebSiteStatusesService;
   private isLoading: boolean;
   private webSiteStatuses: any[];
 

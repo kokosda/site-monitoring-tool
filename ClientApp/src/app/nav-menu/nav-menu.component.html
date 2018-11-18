@@ -17,6 +17,11 @@
                         <span class='glyphicon glyphicon-list'></span> Web Site Statuses
                     </a>
                 </li>
+                <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }' *ngIf="isLoggedIn()">
+                    <a [routerLink]='["/websitestatuses/edit"]' (click)='collapse()'>
+                        <span class='glyphicon glyphicon-pencil'></span> Edit
+                    </a>
+                </li>
                 <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
                     <a [routerLink]='["/login"]' (click)='collapse()' *ngIf="!isLoggedIn()">
                         <span class='glyphicon glyphicon-log-in'></span> Log In

@@ -27,7 +27,7 @@ export class LogInComponent implements OnInit {
     this.logInService.post(credentials)
       .subscribe(response => {
         this.invalidLogin = false;
-        this.router.navigate(["/"]);
+        this.router.navigate(["/websitestatuses"]);
     }, error => {
         this.invalidLogin = true;
     });
