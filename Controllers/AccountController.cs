@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,7 @@ namespace SiteMonitoringTool.Controllers
             this.configuration = configuration;
         }
 
+        [AllowAnonymous]
         [HttpPost("/api/login")]
         public async Task<IActionResult> LogIn([FromBody] LoginResource resource)
         {
@@ -38,13 +40,13 @@ namespace SiteMonitoringTool.Controllers
             if (!user.Password.Equals(resource.Password, StringComparison.InvariantCulture))
                 return Unauthorized();
 
-            var secretValue = configuration.GetValue<string>("AuthenticationSymmetricSecurityKey");
+            var secretValue = configuration["Tokens:Key"];
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretValue));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
             var tokeOptions = new JwtSecurityToken(
-                issuer: "https://localhost:5001",
-                audience: "https://localhost:5001",
+                issuer: configuration["Tokens:Issuer"],
+                audience: configuration["Tokens:Issuer"],
                 claims: new List<Claim>(),
                 expires: DateTime.Now.AddMinutes(5),
                 signingCredentials: signinCredentials
@@ -53,6 +55,13 @@ namespace SiteMonitoringTool.Controllers
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
             var result = Ok(new { Token = tokenString });
             return result;
+        }
+
+        [Authorize]
+        [HttpGet("/api/login/ping")]
+        public IActionResult Ping()
+        {
+            return Ok();
         }
     }
 }
