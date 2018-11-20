@@ -22,5 +22,17 @@ export class WebSiteStatusesService {
     return this.http.post('/api/websitestatuses', wss, { headers: headers })
       .pipe(map(response => response));
   }
+
+  update(wss) {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+    return this.http.put('/api/websitestatuses/' + wss.id, wss, { headers: headers })
+      .pipe(map(response => response));
+  }
+
+  delete(wss) {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+    return this.http.delete('/api/websitestatuses/' + wss.id, wss, { headers: headers })
+      .pipe(map(response => response));
+  }
 }
  

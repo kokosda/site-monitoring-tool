@@ -9,18 +9,18 @@
     </thead>
     <tbody *ngFor="let wss of webSiteStatuses">
       <tr>
-        <td><input type="text" value="{{ wss.siteName }}" name="siteName" /></td>
-        <td><input type="text" value="{{ wss.url }}" name="url" /></td>
-        <td><input type="text" value="{{ wss.interval }}" name="interval" /></td>
+        <td><input type="text" [(ngModel)]="wss.siteName" value="{{ wss.siteName }}" name="siteName" /></td>
+        <td><input type="text" [(ngModel)]="wss.url" value="{{ wss.url }}" name="url" /></td>
+        <td><input type="text" [(ngModel)]="wss.interval" value="{{ wss.interval }}" name="interval" placeholder="dd:mm:ss" /></td>
         <td>
-          <button class="btn btn-info glyphicon glyphicon-ok" (click)="save(wss)"></button> | 
-          <button class="btn btn-danger glyphicon glyphicon-remove" (click)="remove(wss)"></button>
+          <button class="btn btn-info glyphicon glyphicon-ok" (click)="update(wss)"></button> | 
+          <button class="btn btn-danger glyphicon glyphicon-remove" (click)="delete(wss)"></button>
         </td>
       </tr>
     </tbody>
 </table>
 <h2 *ngIf="!isLoading">Add new web site to monitor its status</h2>
-<form #f="ngForm" (ngSubmit)="add(f)" *ngIf="!isLoading">
+<form #f="ngForm" (ngSubmit)="create(f)" *ngIf="!isLoading">
   <div class="form-group">
     <label for="siteName">Site Name*</label>
     <input id="siteName" [(ngModel)]="wss.siteName" name="siteName" type="text" class="form-control" required>
@@ -31,7 +31,9 @@
   </div>
   <div class="form-group">
       <label for="siteName">Interval*</label>
-      <input id="siteName" [(ngModel)]="wss.interval" name="interval" type="text" class="form-control" required>
+      <input id="siteName" [(ngModel)]="wss.interval" name="interval" type="text" class="form-control" placeholder="dd:mm:ss" required>
     </div>
   <button class="btn btn-success">Create <i class="glyphicon glyphicon-plus"></i></button>
 </form>
+<div *ngIf="isProcessing">Processing...</div>
+<div *ngIf="!isProcessing">{{ message }}</div>

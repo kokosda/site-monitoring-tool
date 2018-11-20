@@ -40,7 +40,7 @@ namespace SiteMonitoringTool.Controllers
                 return BadRequest(ModelState);
 
             var webSiteStatus = resource.ToWebSiteStatus();
-            webSiteStatus.LastActionId = scheduleService.Schedule(() => webSiteCrawlService.Crawl(dbContext, webSiteStatus), webSiteStatus.Interval);
+            webSiteStatus.LastActionId = scheduleService.Schedule(() => webSiteCrawlService.Crawl(webSiteStatus), webSiteStatus.Interval);
             dbContext.WebSiteStatuses.Add(webSiteStatus);
             await dbContext.SaveChangesAsync();
 
@@ -68,7 +68,7 @@ namespace SiteMonitoringTool.Controllers
             if (webSiteStatus.LastActionId.HasValue)
                 scheduleService.Unschedule(webSiteStatus.LastActionId.Value);
             
-            webSiteStatus.LastActionId = scheduleService.Schedule(() => webSiteCrawlService.Crawl(dbContext, webSiteStatus), webSiteStatus.Interval);
+            webSiteStatus.LastActionId = scheduleService.Schedule(() => webSiteCrawlService.Crawl(webSiteStatus), webSiteStatus.Interval);
             dbContext.WebSiteStatuses.Update(webSiteStatus);
             await dbContext.SaveChangesAsync();
 

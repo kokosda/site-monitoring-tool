@@ -17,6 +17,10 @@ export class WebSiteStatusesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadAll();
+  }
+
+  loadAll() {
     this.webSiteStatusesService.get().subscribe(wss => {
       console.log("WEBSITESTATUSES", wss);
       this.isLoading = false;

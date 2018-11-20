@@ -7,6 +7,6 @@ namespace SiteMonitoringTool.Services
 {
     public interface IWebSiteCrawlService : IDisposable
     {
-        Task Crawl(SiteMonitoringToolDbContext dbContext, WebSiteStatus WebSiteStatus);
+        Task Crawl(WebSiteStatus WebSiteStatus);
     }
 }

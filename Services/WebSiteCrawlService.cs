@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SiteMonitoringTool.Models;
 using SiteMonitoringTool.Persistence;
@@ -14,20 +15,21 @@ namespace SiteMonitoringTool.Services
 {
     public class WebSiteCrawlService : IWebSiteCrawlService
     {
-        private readonly SiteMonitoringToolDbContext dbContext;
         private readonly ILogger<WebSiteCrawlService> logger;
+        private readonly IServiceProvider serviceProvider;
         private readonly HttpClient httpClient;
 
-        public WebSiteCrawlService(ILogger<WebSiteCrawlService> logger)
+        public WebSiteCrawlService(ILogger<WebSiteCrawlService> logger, IServiceProvider serviceProvider)
         {
             this.logger = logger;
+            this.serviceProvider = serviceProvider;
             this.httpClient = new HttpClient();
         }
 
-        public Task Crawl(SiteMonitoringToolDbContext dbContext, WebSiteStatus webSiteStatus)
+        public Task Crawl(WebSiteStatus webSiteStatus)
         {
             var result = httpClient.GetAsync(webSiteStatus.Url)
-                .ContinueWith(async hr => 
+                .ContinueWith(hr => 
                 {
                     try
                     {
@@ -45,10 +47,17 @@ namespace SiteMonitoringTool.Services
                         webSiteStatus.IsActive = false;
                         logger.LogError(ex, $"Error querying {webSiteStatus.Url}.");
                     }
-                    finally
+
+                    using (var scope = serviceProvider.CreateScope())
+                    using (var dbContext = scope.ServiceProvider.GetRequiredService<SiteMonitoringToolDbContext>())
                     {
-                        dbContext.WebSiteStatuses.Update(webSiteStatus);
-                        await dbContext.SaveChangesAsync();
+                        var wss = dbContext.WebSiteStatuses.FirstOrDefault(x => x.Id == webSiteStatus.Id);
+
+                        if (wss == null)
+                            return;
+
+                        wss.IsActive = webSiteStatus.IsActive;
+                        dbContext.SaveChanges();
                     }
                 });
             return result;

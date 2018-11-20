@@ -9,27 +9,55 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WebSiteStatusesEditComponent extends WebSiteStatusesComponent {
   private wss: any = {};
+  private isProcessing: boolean;
+  private message: string;
 
   constructor(webSiteStatusesService: WebSiteStatusesService) { 
     super(webSiteStatusesService);
+    this.isProcessing = false;
   }
 
   ngOnInit() {
     super.ngOnInit();
   }
 
-  add(f) {
-    console.log("ADD", f);
+  create(f) {
     var wss = JSON.stringify(f.value);
+    this.isProcessing = true;
     this.webSiteStatusesService.create(wss)
-      .subscribe(response => console.log("ADD RESPONSE", response));
+      .subscribe(response => {
+        this.isProcessing = false;
+        this.message = "Done!"
+        this.loadAll();
+      }, error => {
+        this.isProcessing = false;
+        this.message = "Error: " + JSON.stringify(error);
+      });
   }
 
-  save(wss) {
-    console.log("SAVE", wss);
+  update(wss) {
+    this.isProcessing = true;
+    this.webSiteStatusesService.update(wss)
+      .subscribe(response => {
+        this.isProcessing = false;
+        this.message = "Done!"
+        this.loadAll();
+      }, error => {
+        this.isProcessing = false;
+        this.message = "Error: " + JSON.stringify(error);
+      });
   }
 
-  remove(wss) {
-    console.log("REMOVE", wss);
+  delete(wss) {
+    this.isProcessing = true;
+    this.webSiteStatusesService.delete(wss)
+      .subscribe(response => {
+        this.isProcessing = false;
+        this.message = "Done!"
+        this.loadAll();
+      }, error => {
+        this.isProcessing = false;
+        this.message = "Error: " + JSON.stringify(error);
+      });
   }
 }
