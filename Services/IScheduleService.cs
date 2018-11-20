@@ -3,8 +3,13 @@ using System.Threading.Tasks;
 
 namespace SiteMonitoringTool.Services
 {
-    public interface IScheduleService
+    public interface IScheduleService : IDisposable
     {
-        void Schedule(Func<Task> action);
+        ///<summary>
+        /// returns Id of scheduled action.
+        ///</summary>
+        long Schedule(Func<Task> action, TimeSpan interval);
+
+        void Unschedule(long id);
     }
 }

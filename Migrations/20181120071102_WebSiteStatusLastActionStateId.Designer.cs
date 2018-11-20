@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiteMonitoringTool.Persistence;
 
 namespace SiteMonitoringTool.Migrations
 {
     [DbContext(typeof(SiteMonitoringToolDbContext))]
-    partial class SiteMonitoringToolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181120071102_WebSiteStatusLastActionStateId")]
+    partial class WebSiteStatusLastActionStateId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,7 +50,7 @@ namespace SiteMonitoringTool.Migrations
 
                     b.Property<bool>("IsActive");
 
-                    b.Property<long?>("LastActionId");
+                    b.Property<long?>("LastActionStateId");
 
                     b.Property<DateTime>("LastUpdated");
 

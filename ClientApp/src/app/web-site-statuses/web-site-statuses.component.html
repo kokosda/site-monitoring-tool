@@ -4,12 +4,16 @@
     <thead>
         <th>Name</th>
         <th>Url</th>
+        <th>LastUpdated</th>
+        <th>Interval</th>
         <th>IsActive</th>
     </thead>
     <tbody *ngFor="let wss of webSiteStatuses">
         <tr>
             <td>{{ wss.siteName }}</td>
             <td><a href="{{ wss.url }}" target="_blank">{{ wss.url }}</a></td>
+            <td>{{ wss.lastUpdated }}</td>
+            <td>{{ wss.interval }}</td>
             <td><i class="glyphicon glyphicon-{{ wss.isActive ? 'play green' : 'stop red' }}"></i></td>
         </tr>
     </tbody>

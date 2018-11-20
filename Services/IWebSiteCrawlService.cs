@@ -1,9 +1,12 @@
+using System;
 using System.Threading.Tasks;
+using SiteMonitoringTool.Models;
+using SiteMonitoringTool.Persistence;
 
 namespace SiteMonitoringTool.Services
 {
-    public interface IWebSiteCrawlService
+    public interface IWebSiteCrawlService : IDisposable
     {
-        Task Crawl();
+        Task Crawl(SiteMonitoringToolDbContext dbContext, WebSiteStatus WebSiteStatus);
     }
 }

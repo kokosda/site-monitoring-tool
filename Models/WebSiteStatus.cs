@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SiteMonitoringTool.Models
@@ -16,5 +17,13 @@ namespace SiteMonitoringTool.Models
 
         [Required]
         public bool IsActive { get; set; }
+
+        [Required]
+        public DateTime LastUpdated { get; set; }
+
+        [Required]
+        public TimeSpan Interval { get; set; }
+
+        public long? LastActionId { get; set; }
     }
 }

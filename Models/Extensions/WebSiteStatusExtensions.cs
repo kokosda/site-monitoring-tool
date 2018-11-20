@@ -7,15 +7,19 @@ namespace SiteMonitoringTool.Models.Extensions
 {
     public static class WebSiteStatusExtensions
     {
-        public static WebSiteStatusResource ToResource(this WebSiteStatus model)
+        public static WebSiteStatusResource ToResource(this WebSiteStatus webSiteStatus)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            if (webSiteStatus == null)
+                throw new ArgumentNullException(nameof(webSiteStatus));
 
             var result = new WebSiteStatusResource
             {
-                SiteName = model.SiteName,
-                Url = model.Url
+                Id = webSiteStatus.Id,
+                SiteName = webSiteStatus.SiteName,
+                Url = webSiteStatus.Url,
+                IsActive = webSiteStatus.IsActive,
+                LastUpdated = webSiteStatus.LastUpdated,
+                Interval = webSiteStatus.Interval
             };
             return result;
         }
@@ -27,6 +31,36 @@ namespace SiteMonitoringTool.Models.Extensions
 
             var result = collection.Select(wss => wss.ToResource()).ToList();
             return result;
+        }
+
+        public static WebSiteStatus ToWebSiteStatus(this WebSiteStatusResource resource)
+        {
+            if (resource == null)
+                throw new ArgumentNullException(nameof(resource));
+
+            var result = new WebSiteStatus
+            {
+                Interval = resource.Interval,
+                LastUpdated = DateTime.UtcNow,
+                SiteName = resource.SiteName,
+                Url = resource.Url
+            };
+
+            return result;
+        }
+
+        public static void UpdateFromResource(this WebSiteStatus webSiteStatus, WebSiteStatusResource resource)
+        {
+            if (webSiteStatus == null)
+                throw new ArgumentNullException(nameof(webSiteStatus));
+
+            if (resource == null)
+                throw new ArgumentNullException(nameof(resource));
+
+            webSiteStatus.Interval = resource.Interval;
+            webSiteStatus.SiteName = resource.SiteName;
+            webSiteStatus.Url = resource.Url;
+            webSiteStatus.LastUpdated = DateTime.UtcNow;
         }
     }
 }

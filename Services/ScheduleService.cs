@@ -9,64 +9,96 @@ namespace SiteMonitoringTool.Services
 {
     public class ScheduleService : IScheduleService
     {
-        private readonly Timer timer;
-        private ICollection<ActionState> actions;
+        private readonly ICollection<ActionState> actions;
         private readonly object @lock;
+        private readonly Random random;
 
         public ScheduleService()
         {
             @lock = new object();
             actions = new Collection<ActionState>();
-            timer = new Timer(InitTimer, null, dueTime: TimeSpan.Zero, period: new TimeSpan(0, 0, 10));
+            random = new Random();
         }
 
-        public void Schedule(Func<Task> action)
+        public void Dispose()
+        {
+            lock(@lock)
+            {
+                var temp = actions.ToArray();
+
+                foreach(var actionState in temp)
+                {
+                    actionState.Timer.Dispose();
+                    actionState.Timer = null;
+                    actions.Remove(actionState);
+                }
+            }
+        }
+
+        public long Schedule(Func<Task> action, TimeSpan interval)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
 
+            var actionState = new ActionState
+            {
+                Id = DateTime.UtcNow.Ticks + random.Next(1, 1000000),
+                Action = action,
+                Interval = interval,
+                IsExecuting = false
+            };
+            actionState.Timer = new Timer(InitTimer, actionState, dueTime: TimeSpan.Zero, period: interval);
+
+            lock(@lock)
+            {                
+                actions.Add(actionState);
+            }
+
+            var result = actionState.Id;
+            return result;
+        }
+
+        public void Unschedule(long id)
+        {
+            var actionState = actions.FirstOrDefault(a => a.Id == id);
+            
+            if (actionState == null)
+                return;
+
+            actionState.Timer.Dispose();
+            actionState.Timer = null;
+
             lock(@lock)
             {
-                actions.Add(new ActionState
-                {
-                    Action = action,
-                    IsExecuting = false
-                });
+                actions.Remove(actionState);
             }
         }
 
-        private void InitTimer(object o)
+        private void InitTimer(object @object)
         {
-            var arrayOfActions = new ActionState[0];
+            var actionState = @object as ActionState;
 
-            lock(@lock)
+            if (actionState.IsExecuting)
+                return;
+
+            actionState.IsExecuting = true;
+
+            Task.Factory.StartNew(async state => 
             {
-                arrayOfActions = actions.ToArray();
-            }
-
-            foreach (var action in arrayOfActions)
-            {
-                var tempAction = action;
-
-                if (tempAction.IsExecuting)
-                    continue;
-
-                tempAction.IsExecuting = true;
-
-                Task.Factory.StartNew(async state => 
-                {
-                    var @as = state as ActionState;
-                    await @as.Action();
-                    @as.IsExecuting = false;
-                }, tempAction);
-            }
+                var @as = state as ActionState;
+                await @as.Action();
+                @as.IsExecuting = false;
+            }, actionState);
         }
 
         private class ActionState
         {
             private volatile bool isExecuting;
 
+            public long Id { get; set; }
             public Func<Task> Action { get; set; }
+            public TimeSpan Interval { get; set; }
+            public Timer Timer { get; set; }
             public bool IsExecuting
             {
                 get { return isExecuting; }

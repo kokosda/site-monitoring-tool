@@ -31,10 +31,11 @@ namespace SiteMonitoringTool
 
             services.AddSingleton<IWebSiteCrawlService, WebSiteCrawlService>();
             services.AddSingleton<IScheduleService, ScheduleService>();
+            services.AddSingleton<IStartUpService, StartUpService>();
 
             var serviceProvider = services.BuildServiceProvider();
-            var scheduleService = serviceProvider.GetService<IScheduleService>();
-            scheduleService.Schedule(() => serviceProvider.GetService<IWebSiteCrawlService>().Crawl());
+            var startUpService = serviceProvider.GetService<IStartUpService>();
+            startUpService.ScheduleWebSitesCrawling();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
