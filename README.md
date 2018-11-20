@@ -2,9 +2,9 @@
 It's a web service with background thread querying list of sites for availability.
 
 # Prerequisites
-Node.js should be installed.
-.NET Core 2.1
-Angular 7.0.2
+1. Node.js
+2. .NET Core 2.1
+3. Angular 7.0.2
 
 # How to run
 In command panel navigate to .\ClientApp folder and apply `npm install`
