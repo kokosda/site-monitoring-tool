@@ -2,7 +2,7 @@
 It's a web service with background thread querying list of sites for availability.
 
 # Prerequisites
-1. Node.js
+1. Node.js 10.13.0
 2. .NET Core 2.1
 3. Angular 7.0.2
 
