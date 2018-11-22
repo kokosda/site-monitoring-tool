@@ -8,5 +8,7 @@ It's a web service with background thread querying list of sites for availabilit
 
 # How to run
 In command panel navigate to .\ClientApp folder and apply `npm install`
+
 Then go back to project root .\ and apply `ng build`, `dotnet run`
+
 Database not needed because of connecting to hosting DB.

@@ -8,7 +8,6 @@ namespace SiteMonitoringTool.Services
 {
     public class StartUpService : IStartUpService
     {
-        private readonly SiteMonitoringToolDbContext dbContext;
         private readonly IServiceProvider serviceProvider;
         private readonly IScheduleService scheduleService;
         private readonly IWebSiteCrawlService webSiteCrawlService;

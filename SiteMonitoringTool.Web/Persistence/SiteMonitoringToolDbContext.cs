@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SiteMonitoringTool.Models;
+using SiteMonitoringTool.Persistence;
 
 namespace SiteMonitoringTool.Persistence
 {
