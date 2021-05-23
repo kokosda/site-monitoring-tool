@@ -1,4 +1,4 @@
-# SiteMonitoringTool
+# Site Monitoring Tool
 It's a web service with background thread querying list of sites for availability.
 
 # Prerequisites
